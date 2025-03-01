@@ -2,10 +2,23 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Header } from "../components/header";
 import { router } from "expo-router";
 import { ModalConfirmation } from "../components/modalConfirmation";
+import { useState } from "react";
+import { Button } from "../components/button";
 
 export default function Home() {
+  const [modalVisible, setModalVisible] = useState(false);
   function handleClick() {
     console.log("clicou");
+  }
+  function handleOpenModal() {
+    setModalVisible(true);
+  }
+  function handleClosedModal() {
+    setModalVisible(false);
+  }
+  function handleOnOk() {
+    console.log("Confirmed OK");
+    setModalVisible(false);
   }
   return (
     <View>
@@ -13,25 +26,21 @@ export default function Home() {
 
       <View style={{ paddingHorizontal: 16, gap: 24 }}>
         <Text>Alo Mundo</Text>
-        <TouchableOpacity
+        <Button
+          title="Navigate Two Screen"
           onPress={() => router.navigate("/two")}
-          style={{
-            width: "100%",
-            padding: 14,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "blue",
-            borderRadius: 8,
-            marginBottom: 50,
-          }}
-        >
-          <Text style={{ color: "white" }}>Ir para Screen Two</Text>
-        </TouchableOpacity>
-        <ModalConfirmation
-          titleOnModal="Abrir Modal"
-          titleButtonClosedModal="Fechar modal"
-          descriptionModal="Descrição do modal"
         />
+        <View>
+          <ModalConfirmation
+            titleOnModal="Abrir Modal"
+            titleButtonClosedModal="Fechar modal"
+            descriptionModal="Descrição do modal"
+            open={modalVisible}
+            onClose={handleClosedModal}
+            onOk={handleOnOk}
+          />
+        </View>
+        <Button title="Abrir Modal" onPress={handleOpenModal} />
       </View>
     </View>
   );
